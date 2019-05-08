@@ -2,15 +2,11 @@
 
 namespace App\Controller;
 
+use App\Adapter\MailAdapter;
+use App\Adapter\MessageAdapter;
+use App\Adapter\SpoolAdapter;
+use App\Adapter\TransportAdapter;
 use Psr\Log\LoggerInterface;
-use Swift_Mailer;
-use Swift_MemorySpool;
-use Swift_Message;
-use Swift_Plugins_AntiFloodPlugin;
-use Swift_Plugins_LoggerPlugin;
-use Swift_Plugins_Loggers_EchoLogger;
-use Swift_Plugins_ThrottlerPlugin;
-use Swift_SpoolTransport;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -25,22 +21,12 @@ class TestController extends AbstractController
     public function index(LoggerInterface $logger)
     {
 
-        $transport = new Swift_SpoolTransport(
-            new Swift_MemorySpool()
+        $transport = new TransportAdapter(
+            new SpoolAdapter()
         );
-        $mailer = new Swift_Mailer($transport);
+        $mailer = new MailAdapter($transport);
 
-        $antiFloodPlugin = new Swift_Plugins_AntiFloodPlugin();
-        $throttlerPlugin = new Swift_Plugins_ThrottlerPlugin(100);
-        $loggerPlugin = new Swift_Plugins_LoggerPlugin(
-            new Swift_Plugins_Loggers_EchoLogger()
-        );
-
-        $mailer->registerPlugin($antiFloodPlugin);
-        $mailer->registerPlugin($throttlerPlugin);
-        $mailer->registerPlugin($loggerPlugin);
-
-        $message = new Swift_Message();
+        $message = new MessageAdapter();
         $message->setSubject('Test');
         $message->setBody('Body');
         $message->setFrom('test@local.host');
@@ -48,7 +34,7 @@ class TestController extends AbstractController
 
         $mailer->send($message, $errors);
 
-        dump($mailer,$message,$errors,$transport->getSpool());
+        dump($mailer, $message, $errors, $transport->getSpool());
         return $this->render('test/index.html.twig', [
             'controller_name' => 'TestController',
         ]);
