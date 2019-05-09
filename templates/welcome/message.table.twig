@@ -1,0 +1,33 @@
+<table class="table table-bordered table-striped">
+    <thead>
+    <tr>
+        <th style="width: 1%">#</th>
+        <th style="width: 15%">Sender</th>
+        <th style="width: 15%">Receiver</th>
+        <th>Subject</th>
+        <th style="width: 1%">Options</th>
+    </tr>
+    </thead>
+    <tbody class="small">
+    {% for message in messages %}
+        <tr>
+            <td>{{ message.id }}</td>
+            <td>
+                {% for address, name in message.message.from %}
+                    {{ address }}
+                    {{ name }}
+                {% endfor %}
+            </td>
+            <td>
+                {% for address, name in message.message.to %}
+                    {{ address }}
+                    {{ name }}
+                {% endfor %}
+            </td>
+            <td>{{ message.message.subject }}</td>
+            <td>
+            </td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>

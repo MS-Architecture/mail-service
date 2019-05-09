@@ -13,24 +13,40 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class TestController extends AbstractController
 {
-    /**
-     * @Route("/", name="test")
-     * @param LoggerInterface $logger
-     * @return Response
-     */
-    public function index(LoggerInterface $logger)
+//    /**
+//     * @var SpoolAdapter
+//     */
+//    private $spoolAdapter;
+//
+//    public function __construct(SpoolAdapter $spoolAdapter)
+//    {
+//        $this->spoolAdapter = $spoolAdapter;
+//    }
+
+    public function createMail()
     {
-
-        $transport = new TransportAdapter(
-            new SpoolAdapter()
-        );
-        $mailer = new MailAdapter($transport);
-
         $message = new MessageAdapter();
         $message->setSubject('Test');
         $message->setBody('Body');
         $message->setFrom('test@local.host');
         $message->setTo('test@local.host');
+
+        return $message;
+    }
+
+    /**
+     * @Route("/test", name="test")
+     * @return Response
+     */
+    public function index()
+    {
+
+        $transport = new TransportAdapter(
+
+        );
+
+
+        $mailer = new MailAdapter($transport);
 
         $mailer->send($message, $errors);
 

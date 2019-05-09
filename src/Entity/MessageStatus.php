@@ -11,13 +11,20 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class MessageStatus extends AbstractEntity
 {
+    const STATUS_FAILED = 'STATUS_FAILED';
+    const STATUS_WAITING = 'STATUS_WAITING';
+    const STATUS_SENDING = 'STATUS_SENDING';
+    const STATUS_SUCCESS = 'STATUS_SUCCESS';
+
+    const PROPERTY_NAME = 'name';
+
     /**
      * @ORM\Column(type="string", length=255)
      */
     private $name;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $description;
 

@@ -1,0 +1,40 @@
+{% extends 'base.html.twig' %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('assets/swagger-ui-3.22.1/swagger-ui.css') }}">
+    <style>
+        .swagger-ui div.topbar {
+            display: none;
+        }
+    </style>
+{% endblock %}
+
+{% block body %}
+    <div id="swagger-ui"></div>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script src="{{ asset('assets/swagger-ui-3.22.1/swagger-ui-bundle.js') }}"></script>
+    <script src="{{ asset('assets/swagger-ui-3.22.1/swagger-ui-standalone-preset.js') }}"></script>
+    <script>
+        window.onload = function() {
+            // Begin Swagger UI call region
+            window.ui = SwaggerUIBundle({
+                url: "{{ path('welcome.api.json') }}",
+                dom_id: '#swagger-ui',
+                deepLinking: true,
+                presets: [
+                    SwaggerUIBundle.presets.apis,
+                    SwaggerUIStandalonePreset,
+                ],
+                layout: "StandaloneLayout",
+                defaultModelsExpandDepth: -1,
+                filter: false,
+                validatorUrl: null
+            });
+            // End Swagger UI call region
+        }
+    </script>
+{% endblock %}

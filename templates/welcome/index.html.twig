@@ -1,0 +1,28 @@
+{# @var message \App\Entity\Message #}
+
+{% extends 'base.html.twig' %}
+
+{% block body %}
+
+    <h1>Status</h1>
+    <a href="{{ path('messages.send') }}">Send</a>
+    <hr/>
+
+    <a href="{{ path('message.create.plain-text') }}">Create Message</a>
+
+    <h2>Waiting</h2>
+    {% include 'welcome/message.table.twig' with {'messages': messages.waiting } %}
+
+    <h2>Sending</h2>
+    <a href="{{ path('messages.update.sending.to.waiting') }}">Set to Waiting</a>
+    {% include 'welcome/message.table.twig' with {'messages': messages.sending } %}
+
+    <h2>Failed</h2>
+    <a href="{{ path('messages.update.failed.to.waiting') }}">Set to Waiting</a>
+    {% include 'welcome/message.table.twig' with {'messages': messages.failed } %}
+
+    <h2>Success</h2>
+    <a href="{{ path('messages.update.success.to.waiting') }}">Set to Waiting</a>
+    {% include 'welcome/message.table.twig' with {'messages': messages.success } %}
+
+{% endblock %}
