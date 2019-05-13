@@ -11,6 +11,11 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class TransportType extends AbstractEntity
 {
+    const TYPE_NULL = 'TYPE_NULL';
+    const TYPE_SMTP = 'TYPE_SMTP';
+    const TYPE_BALANCED = 'TYPE_BALANCED';
+    const TYPE_FAILOVER = 'TYPE_FAILOVER';
+
     /**
      * @ORM\Column(type="string", length=255)
      */

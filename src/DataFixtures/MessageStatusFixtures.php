@@ -18,19 +18,19 @@ class MessageStatusFixtures extends Fixture
     public function load(ObjectManager $manager)
     {
         $messageStatus = new MessageStatus();
-        $messageStatus->setName('STATUS_WAITING');
+        $messageStatus->setName(MessageStatus::STATUS_WAITING);
         $manager->persist($messageStatus);
 
         $messageStatus = new MessageStatus();
-        $messageStatus->setName('STATUS_SENDING');
+        $messageStatus->setName(MessageStatus::STATUS_SENDING);
         $manager->persist($messageStatus);
 
         $messageStatus = new MessageStatus();
-        $messageStatus->setName('STATUS_SUCCESS');
+        $messageStatus->setName(MessageStatus::STATUS_SUCCESS);
         $manager->persist($messageStatus);
 
         $messageStatus = new MessageStatus();
-        $messageStatus->setName('STATUS_FAILED');
+        $messageStatus->setName(MessageStatus::STATUS_FAILED);
         $manager->persist($messageStatus);
 
         $manager->flush();

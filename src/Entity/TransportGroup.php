@@ -11,6 +11,8 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class TransportGroup extends AbstractEntity
 {
+    const PROPERTY_NAME = 'name';
+
     /**
      * @ORM\Column(type="string", length=255)
      */
