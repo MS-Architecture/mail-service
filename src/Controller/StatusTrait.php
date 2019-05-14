@@ -26,6 +26,8 @@ trait StatusTrait
         /** @var Message[] $messages */
         $messages = $fromStatus->getMessages()->toArray();
         foreach ($messages as $message) {
+            $message->setMessageLog(null);
+            $message->setMessageError(null);
             $message->setMessageStatus($toStatus);
             $messageManager->persist($message);
         }

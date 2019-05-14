@@ -2,12 +2,15 @@
 
 namespace App\Controller;
 
+use App\Adapter\DefaultTransportAdapter;
 use App\Adapter\MessageAdapter;
-use App\Adapter\TransportAdapter;
+use App\Adapter\Transport\NullAdapter;
+use App\Adapter\Transport\SmtpAdapter;
 use App\Entity\Message;
 use App\Entity\MessageStatus;
 use Faker\Factory;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Throwable;
 
@@ -29,20 +32,33 @@ class MessageController extends AbstractController
         $statusFailed = $this->fetchStatus(MessageStatus::STATUS_FAILED);
         $statusSuccess = $this->fetchStatus(MessageStatus::STATUS_SUCCESS);
 
-        $transportAdapter = new TransportAdapter();
-
         $messageManager = $this->getObjectManager(Message::class);
         /** @var Message[] $messages */
         $messages = $statusWaiting->getMessages()->toArray();
 
         foreach ($messages as $message) {
+            $message->setMessageError(null);
+            $message->setMessageLog(null);
             $message->setMessageStatus($statusSending);
             $messageManager->persist($message);
             $messageManager->flush();
 
+            switch (rand(0,1)) {
+                case 0:
+                    $transportAdapter = new DefaultTransportAdapter(
+                        new SmtpAdapter()
+                    );
+                    break;
+                default:
+                    $transportAdapter = new DefaultTransportAdapter(
+                        new NullAdapter()
+                    );
+            }
+
             try {
                 if (($response = $transportAdapter->send($message->getMessage(), $errors)) == 0) {
                     $message->setMessageStatus($statusFailed);
+                    $message->setMessageLog($transportAdapter->getLog());
                     if (!empty($errors)) {
                         $message->setMessageError($errors);
                     }
@@ -50,18 +66,27 @@ class MessageController extends AbstractController
                     $messageManager->flush();
                 } else {
                     $message->setMessageStatus($statusSuccess);
+                    $message->setMessageLog($transportAdapter->getLog());
                     $messageManager->persist($message);
                     $messageManager->flush();
                 }
             } catch (Throwable $throwable) {
                 $message->setMessageStatus($statusFailed);
-                $message->setMessageError(['Server error']);
+                $message->setMessageLog($transportAdapter->getLog());
+                $errors = ['Server error', get_class($transportAdapter)];
+                $transports = $transportAdapter->getTransports();
+                foreach( $transports as $transport ) {
+                    $errors[] = get_class($transport);
+                }
+                $errors[] = utf8_encode($throwable->getMessage());
+                $message->setMessageError($errors);
                 $messageManager->persist($message);
                 $messageManager->flush();
             }
         }
 
-        return $this->redirectToRoute('welcome.status');
+        return new Response('<html lang="en"><head><title></title></head><body></body></html>');
+//        return $this->redirectToRoute('welcome.status');
     }
 
     /**
@@ -101,10 +126,10 @@ class MessageController extends AbstractController
         $messageAdapter->setSubject($faker->text);
         $messageAdapter->setBody(implode($faker->paragraphs));
 
-        $messageAdapter->setTo($faker->email);
-        $messageAdapter->setFrom($faker->email);
-        $messageAdapter->setReplyTo($faker->email);
-        $messageAdapter->setReturnPath($faker->email);
+        $messageAdapter->setTo('gerdchristian.kunze@googlemail.com');
+        $messageAdapter->setFrom('drupie@kuw-informatik.de');
+        $messageAdapter->setReplyTo('drupie@kuw-informatik.de');
+        $messageAdapter->setReturnPath('drupie@kuw-informatik.de');
 
         return $messageAdapter;
     }

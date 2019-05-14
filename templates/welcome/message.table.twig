@@ -1,10 +1,13 @@
-<table class="table table-bordered table-striped">
+{# @var message \App\Entity\Message #}
+
+<table class="table table-bordered table-striped table-sm">
     <thead>
     <tr>
         <th style="width: 1%">#</th>
         <th style="width: 15%">Sender</th>
         <th style="width: 15%">Receiver</th>
-        <th>Subject</th>
+        <th style="width: 35%;">Subject</th>
+        <th>Log</th>
         <th style="width: 1%">Options</th>
     </tr>
     </thead>
@@ -25,6 +28,18 @@
                 {% endfor %}
             </td>
             <td>{{ message.message.subject }}</td>
+            <td>
+                <ul class="list-group list-unstyled text-danger">
+                {% for index, error in message.messageError %}
+                    <li class="list-group-item">{{ error|raw }}</li>
+                {% endfor %}
+                </ul>
+                <ul class="list-group list-unstyled">
+                {% for index, log in message.messageLog %}
+                    <li class="list-group-item p-1"><div class="pre-scrollable" style="max-height: 100px;">{{ log|raw|nl2br }}</div></li>
+                {% endfor %}
+                </ul>
+            </td>
             <td>
             </td>
         </tr>

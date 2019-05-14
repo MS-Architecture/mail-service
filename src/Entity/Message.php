@@ -21,9 +21,14 @@ class Message extends AbstractEntity
     private $message;
 
     /**
-     * @ORM\Column(type="string", nullable=true)
+     * @ORM\Column(type="text", nullable=true)
      */
     private $messageError;
+
+    /**
+     * @ORM\Column(type="text", nullable=true)
+     */
+    private $messageLog;
 
     /**
      * @return MessageStatus|null
@@ -78,6 +83,25 @@ class Message extends AbstractEntity
     public function setMessageError($messageError): self
     {
         $this->messageError = json_encode($messageError);
+
+        return $this;
+    }
+
+    /**
+     * @return mixed|null
+     */
+    public function getMessageLog()
+    {
+        return json_decode($this->messageLog);
+    }
+
+    /**
+     * @param mixed $messageLog
+     * @return Message
+     */
+    public function setMessageLog($messageLog): self
+    {
+        $this->messageLog = json_encode($messageLog);
 
         return $this;
     }

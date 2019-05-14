@@ -23,3 +23,5 @@
 
 - c require zircote/swagger-php
 - c require fzaninotto/faker
+
+- c require cron/cron-bundle
