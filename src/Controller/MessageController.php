@@ -2,7 +2,7 @@
 
 namespace App\Controller;
 
-use App\Adapter\DefaultTransportAdapter;
+use App\Adapter\SimpleTransportAdapter;
 use App\Adapter\MessageAdapter;
 use App\Adapter\Transport\NullAdapter;
 use App\Adapter\Transport\SmtpAdapter;
@@ -45,12 +45,12 @@ class MessageController extends AbstractController
 
             switch (rand(0,1)) {
                 case 0:
-                    $transportAdapter = new DefaultTransportAdapter(
+                    $transportAdapter = new SimpleTransportAdapter(
                         new SmtpAdapter()
                     );
                     break;
                 default:
-                    $transportAdapter = new DefaultTransportAdapter(
+                    $transportAdapter = new SimpleTransportAdapter(
                         new NullAdapter()
                     );
             }

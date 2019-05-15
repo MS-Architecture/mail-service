@@ -7,10 +7,10 @@ use App\Adapter\Transport\SmtpAdapter;
 use App\Adapter\Transport\TransportInterface;
 
 /**
- * Class DefaultTransportAdapter
+ * Class SimpleTransportAdapter
  * @package App\Adapter
  */
-class DefaultTransportAdapter implements TransportAdapterInterface
+class SimpleTransportAdapter implements TransportAdapterInterface
 {
     /**
      * @var TransportInterface|NullAdapter|SmtpAdapter
