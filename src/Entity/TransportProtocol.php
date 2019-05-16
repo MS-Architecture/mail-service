@@ -7,10 +7,13 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Entity(repositoryClass="App\Repository\TransportGroupRepository")
+ * @ORM\Entity(repositoryClass="App\Repository\TransportProtocolRepository")
  */
-class TransportGroup extends AbstractEntity
+class TransportProtocol extends AbstractEntity
 {
+    const PROTOCOL_NULL = 'PROTOCOL_NULL';
+    const PROTOCOL_SMTP = 'PROTOCOL_SMTP';
+
     const PROPERTY_NAME = 'name';
 
     /**
@@ -24,12 +27,7 @@ class TransportGroup extends AbstractEntity
     private $description;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\TransportEnvelope", inversedBy="transportGroups")
-     */
-    private $transportEnvelope;
-
-    /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\Transport", inversedBy="transportGroups")
+     * @ORM\OneToMany(targetEntity="App\Entity\Transport", mappedBy="transportProtocol")
      */
     private $transports;
 
@@ -48,7 +46,7 @@ class TransportGroup extends AbstractEntity
 
     /**
      * @param string $name
-     * @return TransportGroup
+     * @return TransportProtocol
      */
     public function setName(string $name): self
     {
@@ -67,30 +65,11 @@ class TransportGroup extends AbstractEntity
 
     /**
      * @param string $description
-     * @return TransportGroup
+     * @return TransportProtocol
      */
     public function setDescription(string $description): self
     {
         $this->description = $description;
-
-        return $this;
-    }
-
-    /**
-     * @return TransportEnvelope|null
-     */
-    public function getTransportEnvelope(): ?TransportEnvelope
-    {
-        return $this->transportEnvelope;
-    }
-
-    /**
-     * @param TransportEnvelope|null $transportEnvelope
-     * @return TransportGroup
-     */
-    public function setTransportEnvelope(?TransportEnvelope $transportEnvelope): self
-    {
-        $this->transportEnvelope = $transportEnvelope;
 
         return $this;
     }
@@ -105,12 +84,13 @@ class TransportGroup extends AbstractEntity
 
     /**
      * @param Transport $transport
-     * @return TransportGroup
+     * @return TransportProtocol
      */
     public function addTransport(Transport $transport): self
     {
         if (!$this->transports->contains($transport)) {
             $this->transports[] = $transport;
+            $transport->setTransportProtocol($this);
         }
 
         return $this;
@@ -118,12 +98,16 @@ class TransportGroup extends AbstractEntity
 
     /**
      * @param Transport $transport
-     * @return TransportGroup
+     * @return TransportProtocol
      */
     public function removeTransport(Transport $transport): self
     {
         if ($this->transports->contains($transport)) {
             $this->transports->removeElement($transport);
+            // set the owning side to null (unless already changed)
+            if ($transport->getTransportProtocol() === $this) {
+                $transport->setTransportProtocol(null);
+            }
         }
 
         return $this;

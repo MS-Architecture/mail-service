@@ -19,18 +19,22 @@ class MessageStatusFixtures extends Fixture
     {
         $messageStatus = new MessageStatus();
         $messageStatus->setName(MessageStatus::STATUS_WAITING);
+        $messageStatus->setDescription('Waiting');
         $manager->persist($messageStatus);
 
         $messageStatus = new MessageStatus();
         $messageStatus->setName(MessageStatus::STATUS_SENDING);
+        $messageStatus->setDescription('Sending');
         $manager->persist($messageStatus);
 
         $messageStatus = new MessageStatus();
         $messageStatus->setName(MessageStatus::STATUS_SUCCESS);
+        $messageStatus->setDescription('Success');
         $manager->persist($messageStatus);
 
         $messageStatus = new MessageStatus();
         $messageStatus->setName(MessageStatus::STATUS_FAILED);
+        $messageStatus->setDescription('Failed');
         $manager->persist($messageStatus);
 
         $manager->flush();

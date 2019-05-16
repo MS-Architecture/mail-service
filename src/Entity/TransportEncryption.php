@@ -7,14 +7,15 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Entity(repositoryClass="App\Repository\TransportTypeRepository")
+ * @ORM\Entity(repositoryClass="App\Repository\TransportEncryptionRepository")
  */
-class TransportType extends AbstractEntity
+class TransportEncryption extends AbstractEntity
 {
-    const TYPE_NULL = 'TYPE_NULL';
-    const TYPE_SMTP = 'TYPE_SMTP';
-    const TYPE_BALANCED = 'TYPE_BALANCED';
-    const TYPE_FAILOVER = 'TYPE_FAILOVER';
+    const ENCRYPTION_NONE = '';
+    const ENCRYPTION_SSL = 'ssl';
+    const ENCRYPTION_TLS = 'tls';
+
+    const PROPERTY_NAME = 'name';
 
     /**
      * @ORM\Column(type="string", length=255)
@@ -27,7 +28,7 @@ class TransportType extends AbstractEntity
     private $description;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Transport", mappedBy="transportType")
+     * @ORM\OneToMany(targetEntity="App\Entity\Transport", mappedBy="transportEncryption")
      */
     private $transports;
 
@@ -46,7 +47,7 @@ class TransportType extends AbstractEntity
 
     /**
      * @param string $name
-     * @return TransportType
+     * @return TransportEncryption
      */
     public function setName(string $name): self
     {
@@ -64,10 +65,10 @@ class TransportType extends AbstractEntity
     }
 
     /**
-     * @param string $description
-     * @return TransportType
+     * @param string|null $description
+     * @return TransportEncryption
      */
-    public function setDescription(string $description): self
+    public function setDescription(?string $description): self
     {
         $this->description = $description;
 
@@ -84,13 +85,13 @@ class TransportType extends AbstractEntity
 
     /**
      * @param Transport $transport
-     * @return TransportType
+     * @return TransportEncryption
      */
     public function addTransport(Transport $transport): self
     {
         if (!$this->transports->contains($transport)) {
             $this->transports[] = $transport;
-            $transport->setTransportType($this);
+            $transport->setTransportEncryption($this);
         }
 
         return $this;
@@ -98,15 +99,15 @@ class TransportType extends AbstractEntity
 
     /**
      * @param Transport $transport
-     * @return TransportType
+     * @return TransportEncryption
      */
     public function removeTransport(Transport $transport): self
     {
         if ($this->transports->contains($transport)) {
             $this->transports->removeElement($transport);
             // set the owning side to null (unless already changed)
-            if ($transport->getTransportType() === $this) {
-                $transport->setTransportType(null);
+            if ($transport->getTransportEncryption() === $this) {
+                $transport->setTransportEncryption(null);
             }
         }
 

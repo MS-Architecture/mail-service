@@ -2,4 +2,110 @@
 
 {% block body %}
 
+    <div class="row">
+        <div class="col">
+            <h2>Endpoint</h2>
+            <form class="p-3 bg-light" method="post">
+                <div class="form-group">
+                    <div class="input-group my-3">
+                        <div class="input-group-prepend w-25">
+                            <label class="input-group-text w-100" for="transportProtocol">Protocol</label>
+                        </div>
+                        <select name="transportProtocol" class="custom-select" id="transportProtocol">
+                            {# @var transportProtocol \App\Entity\TransportProtocol #}
+                            {% for transportProtocol in transportProtocols %}
+                                <option value="{{ transportProtocol.id }}">{{ transportProtocol.description }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="input-group">
+                        <div class="input-group-prepend w-25">
+                            <span class="input-group-text w-100" id="transportPropertyHost">Host</span>
+                        </div>
+                        <input name="transportProperty[Host]" type="text" class="form-control" placeholder=""
+                               aria-label="Host"
+                               aria-describedby="transportPropertyHost">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="input-group">
+                        <div class="input-group-prepend w-25">
+                            <span class="input-group-text w-100" id="transportPropertyPort">Port</span>
+                        </div>
+                        <input name="transportProperty[Port]" type="number" class="form-control" placeholder=""
+                               aria-label="Port"
+                               aria-describedby="transportPropertyPort">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="input-group">
+                        <div class="input-group-prepend w-25">
+                            <label class="input-group-text w-100" for="transportEncryption">Encryption</label>
+                        </div>
+                        <select name="transportEncryption" class="custom-select" id="transportEncryption">
+                            {# @var transportEncryption \App\Entity\TransportEncryption #}
+                            {% for transportEncryption in transportEncryptions %}
+                                <option value="{{ transportEncryption.id }}">{{ transportEncryption.description }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="input-group">
+                        <div class="input-group-prepend w-25">
+                            <span class="input-group-text w-100" id="transportPropertyUsername">Username</span>
+                        </div>
+                        <input name="transportProperty[Username]" type="text" class="form-control" placeholder=""
+                               aria-label="Username"
+                               aria-describedby="transportPropertyUsername">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="input-group">
+                        <div class="input-group-prepend w-25">
+                            <span class="input-group-text w-100" id="transportPropertyPassword">Password</span>
+                        </div>
+                        <input name="transportProperty[Password]" type="password" class="form-control" placeholder=""
+                               aria-label="Password"
+                               aria-describedby="transportPropertyPassword"
+                               autocomplete="new-password">
+                    </div>
+                </div>
+                <div class="text-right">
+                    <button type="submit" class="btn btn-primary">Create</button>
+                </div>
+            </form>
+            <hr/>
+            <ul class="list-group">
+                {# @var transportProperty \App\Entity\TransportProperty #}
+                {% for transportProperty in transportProperties %}
+                    <li class="list-group-item">{{ transportProperty.host }}</li>
+                    <li class="list-group-item">{{ transportProperty.port }}</li>
+                    <li class="list-group-item">{{ transportProperty.username }}</li>
+                    <li class="list-group-item">{{ transportProperty.password }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+        <div class="col">
+            <h2>Transport</h2>
+        </div>
+        <div class="col">
+
+        </div>
+    </div>
+
+    <div class="input-group my-3">
+        <div class="input-group-prepend">
+            <label class="input-group-text" for="transportType">Envelope</label>
+        </div>
+        <select class="custom-select" id="transportType">
+            {# @var transportEnvelope \App\Entity\TransportEnvelope #}
+            {% for transportEnvelope in transportEnvelopes %}
+                <option value="{{ transportEnvelope.id }}">{{ transportEnvelope.description }}</option>
+            {% endfor %}
+        </select>
+    </div>
+
 {% endblock %}

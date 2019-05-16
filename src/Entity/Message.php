@@ -10,6 +10,8 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Message extends AbstractEntity
 {
+    use LifeCycleTrait;
+
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\MessageStatus", inversedBy="messages", fetch="EAGER")
      */

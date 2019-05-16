@@ -2,6 +2,8 @@
 
 namespace App\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -10,49 +12,119 @@ use Doctrine\ORM\Mapping as ORM;
 class Transport extends AbstractEntity
 {
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\TransportGroup", inversedBy="transports")
+     * @ORM\ManyToOne(targetEntity="App\Entity\TransportProtocol", inversedBy="transports")
      */
-    private $transportGroup;
+    private $transportProtocol;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\TransportType", inversedBy="transports")
+     * @ORM\ManyToOne(targetEntity="App\Entity\TransportEncryption", inversedBy="transports")
      */
-    private $transportType;
+    private $transportEncryption;
 
     /**
-     * @return TransportGroup|null
+     * @ORM\ManyToOne(targetEntity="App\Entity\TransportProperty", inversedBy="transports")
      */
-    public function getTransportGroup(): ?TransportGroup
+    private $transportProperty;
+
+    /**
+     * @ORM\ManyToMany(targetEntity="App\Entity\TransportGroup", mappedBy="transports")
+     */
+    private $transportGroups;
+
+    public function __construct()
     {
-        return $this->transportGroup;
+        $this->transportGroups = new ArrayCollection();
     }
 
     /**
-     * @param TransportGroup|null $transportGroup
+     * @return TransportProtocol|null
+     */
+    public function getTransportProtocol(): ?TransportProtocol
+    {
+        return $this->transportProtocol;
+    }
+
+    /**
+     * @param TransportProtocol|null $transportProtocol
      * @return Transport
      */
-    public function setTransportGroup(?TransportGroup $transportGroup): self
+    public function setTransportProtocol(?TransportProtocol $transportProtocol): self
     {
-        $this->transportGroup = $transportGroup;
+        $this->transportProtocol = $transportProtocol;
 
         return $this;
     }
 
     /**
-     * @return TransportType|null
+     * @return TransportEncryption|null
      */
-    public function getTransportType(): ?TransportType
+    public function getTransportEncryption(): ?TransportEncryption
     {
-        return $this->transportType;
+        return $this->transportEncryption;
     }
 
     /**
-     * @param TransportType|null $transportType
+     * @param TransportEncryption|null $transportEncryption
      * @return Transport
      */
-    public function setTransportType(?TransportType $transportType): self
+    public function setTransportEncryption(?TransportEncryption $transportEncryption): self
     {
-        $this->transportType = $transportType;
+        $this->transportEncryption = $transportEncryption;
+
+        return $this;
+    }
+
+    /**
+     * @return TransportProperty|null
+     */
+    public function getTransportProperty(): ?TransportProperty
+    {
+        return $this->transportProperty;
+    }
+
+    /**
+     * @param TransportProperty|null $transportProperty
+     * @return Transport
+     */
+    public function setTransportProperty(?TransportProperty $transportProperty): self
+    {
+        $this->transportProperty = $transportProperty;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|TransportGroup[]
+     */
+    public function getTransportGroups(): Collection
+    {
+        return $this->transportGroups;
+    }
+
+    /**
+     * @param TransportGroup $transportGroup
+     * @return Transport
+     */
+    public function addTransportGroup(TransportGroup $transportGroup): self
+    {
+        if (!$this->transportGroups->contains($transportGroup)) {
+            $this->transportGroups[] = $transportGroup;
+            $transportGroup->addTransport($this);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param TransportGroup $transportGroup
+     * @return Transport
+     */
+    public function removeTransportGroup(TransportGroup $transportGroup): self
+    {
+        if ($this->transportGroups->contains($transportGroup)) {
+            $this->transportGroups->removeElement($transportGroup);
+            $transportGroup->removeTransport($this);
+        }
 
         return $this;
     }

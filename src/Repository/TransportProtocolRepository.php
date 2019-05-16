@@ -2,29 +2,29 @@
 
 namespace App\Repository;
 
-use App\Entity\TransportType;
+use App\Entity\TransportProtocol;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 
 /**
- * @method TransportType|null find($id, $lockMode = null, $lockVersion = null)
- * @method TransportType|null findOneBy(array $criteria, array $orderBy = null)
- * @method TransportType[]    findAll()
- * @method TransportType[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+ * @method TransportProtocol|null find($id, $lockMode = null, $lockVersion = null)
+ * @method TransportProtocol|null findOneBy(array $criteria, array $orderBy = null)
+ * @method TransportProtocol[]    findAll()
+ * @method TransportProtocol[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
-class TransportTypeRepository extends ServiceEntityRepository
+class TransportProtocolRepository extends ServiceEntityRepository
 {
     /**
-     * TransportTypeRepository constructor.
+     * TransportProtocolRepository constructor.
      * @param RegistryInterface $registry
      */
     public function __construct(RegistryInterface $registry)
     {
-        parent::__construct($registry, TransportType::class);
+        parent::__construct($registry, TransportProtocol::class);
     }
 
     // /**
-    //  * @return TransportType[] Returns an array of TransportType objects
+    //  * @return TransportProtocol[] Returns an array of TransportProtocol objects
     //  */
     /*
     public function findByExampleField($value)
@@ -41,7 +41,7 @@ class TransportTypeRepository extends ServiceEntityRepository
     */
 
     /*
-    public function findOneBySomeField($value): ?TransportType
+    public function findOneBySomeField($value): ?TransportProtocol
     {
         return $this->createQueryBuilder('t')
             ->andWhere('t.exampleField = :val')

@@ -2,6 +2,8 @@
 
 namespace App\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -28,6 +30,16 @@ class TransportProperty extends AbstractEntity
      * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $password;
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Transport", mappedBy="transportProperty")
+     */
+    private $transports;
+
+    public function __construct()
+    {
+        $this->transports = new ArrayCollection();
+    }
 
     /**
      * @return string|null
@@ -101,6 +113,45 @@ class TransportProperty extends AbstractEntity
     public function setPassword(?string $password): self
     {
         $this->password = $password;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Transport[]
+     */
+    public function getTransports(): Collection
+    {
+        return $this->transports;
+    }
+
+    /**
+     * @param Transport $transport
+     * @return TransportProperty
+     */
+    public function addTransport(Transport $transport): self
+    {
+        if (!$this->transports->contains($transport)) {
+            $this->transports[] = $transport;
+            $transport->setTransportProperty($this);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param Transport $transport
+     * @return TransportProperty
+     */
+    public function removeTransport(Transport $transport): self
+    {
+        if ($this->transports->contains($transport)) {
+            $this->transports->removeElement($transport);
+            // set the owning side to null (unless already changed)
+            if ($transport->getTransportProperty() === $this) {
+                $transport->setTransportProperty(null);
+            }
+        }
 
         return $this;
     }
