@@ -15,6 +15,9 @@ class TransportEnvelope extends AbstractEntity
     const ENVELOPE_BALANCED = 'ENVELOPE_BALANCED';
     const ENVELOPE_FAILOVER = 'ENVELOPE_FAILOVER';
 
+    const PROPERTY_NAME = 'name';
+    const PROPERTY_DESCRIPTION = 'description';
+
     /**
      * @ORM\Column(type="string", length=255)
      */

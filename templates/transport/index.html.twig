@@ -24,28 +24,26 @@
     <div class="row">
         <div class="col">
             <h3>Endpoint</h3>
-            {% form_theme transportForm _self %}
-            {{ form_start(transportForm, {method:'post', attr: {class: 'px-3 pt-1 pb-3 bg-light'}}) }}
-            {{ form_row(transportForm.transportName) }}
+            {% form_theme formTransport _self %}
+            {{ form_start(formTransport, {method:'post', attr: {class: 'px-3 pt-1 pb-3 bg-light'}}) }}
+            {{ form_row(formTransport.transportName) }}
             <hr/>
-            {{ form_row(transportForm.transportProtocol, {attr: {class: 'custom-select'}}) }}
-            {{ form_row(transportForm.transportPropertyHost) }}
-            {{ form_row(transportForm.transportPropertyPort) }}
-            {{ form_row(transportForm.transportEncryption, {attr: {class: 'custom-select'}}) }}
+            {{ form_row(formTransport.transportProtocol, {attr: {class: 'custom-select'}}) }}
+            {{ form_row(formTransport.transportPropertyHost) }}
+            {{ form_row(formTransport.transportPropertyPort) }}
+            {{ form_row(formTransport.transportEncryption, {attr: {class: 'custom-select'}}) }}
             <hr/>
-            {{ form_row(transportForm.transportPropertyUsername) }}
-            {{ form_row(transportForm.transportPropertyPassword) }}
+            {{ form_row(formTransport.transportPropertyUsername) }}
+            {{ form_row(formTransport.transportPropertyPassword) }}
             <div class="text-right">
                 <button type="submit" class="btn btn-primary">Create</button>
             </div>
-            {{ form_end(transportForm) }}
-
-
+            {{ form_end(formTransport) }}
 
             <hr/>
             {# @var transportProperty \App\Entity\TransportProperty #}
             {% for transportProperty in transportProperties %}
-                <ul class="list-group">
+                <ul class="list-group mb-1">
                     <li class="list-group-item">
                         {{ transportProperty.transport.name }}
                     </li>
@@ -67,22 +65,13 @@
         </div>
         <div class="col">
             <h2>Transport</h2>
+            {% form_theme formGroup _self %}
+            {{ form_start(formGroup, {method:'post', attr: {class: 'px-3 pt-1 pb-3 bg-light'}}) }}
+            {{ form_row(formGroup.name) }}
+            {{ form_row(formGroup.description) }}
+            {{ form_row(formGroup.transportEnvelope, {attr: {class: 'custom-select'}}) }}
+            {{ form_end(formGroup) }}
         </div>
-        <div class="col">
-
-        </div>
-    </div>
-
-    <div class="input-group my-3">
-        <div class="input-group-prepend">
-            <label class="input-group-text" for="transportType">Envelope</label>
-        </div>
-        <select class="custom-select" id="transportType">
-            {# @var transportEnvelope \App\Entity\TransportEnvelope #}
-            {% for transportEnvelope in transportEnvelopes %}
-                <option value="{{ transportEnvelope.id }}">{{ transportEnvelope.description }}</option>
-            {% endfor %}
-        </select>
     </div>
 
 {% endblock %}
