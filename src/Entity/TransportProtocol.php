@@ -15,6 +15,7 @@ class TransportProtocol extends AbstractEntity
     const PROTOCOL_SMTP = 'PROTOCOL_SMTP';
 
     const PROPERTY_NAME = 'name';
+    const PROPERTY_DESCRIPTION = 'description';
 
     /**
      * @ORM\Column(type="string", length=255)

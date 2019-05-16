@@ -2,8 +2,6 @@
 
 namespace App\Entity;
 
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -12,7 +10,7 @@ use Doctrine\ORM\Mapping as ORM;
 class TransportProperty extends AbstractEntity
 {
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $host;
 
@@ -32,14 +30,9 @@ class TransportProperty extends AbstractEntity
     private $password;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Transport", mappedBy="transportProperty")
+     * @ORM\OneToOne(targetEntity="App\Entity\Transport", mappedBy="transportProperty", cascade={"persist", "remove"})
      */
-    private $transports;
-
-    public function __construct()
-    {
-        $this->transports = new ArrayCollection();
-    }
+    private $transport;
 
     /**
      * @return string|null
@@ -50,10 +43,10 @@ class TransportProperty extends AbstractEntity
     }
 
     /**
-     * @param string $host
+     * @param string|null $host
      * @return TransportProperty
      */
-    public function setHost(string $host): self
+    public function setHost(?string $host): self
     {
         $this->host = $host;
 
@@ -118,39 +111,25 @@ class TransportProperty extends AbstractEntity
     }
 
     /**
-     * @return Collection|Transport[]
+     * @return Transport|null
      */
-    public function getTransports(): Collection
+    public function getTransport(): ?Transport
     {
-        return $this->transports;
+        return $this->transport;
     }
 
     /**
-     * @param Transport $transport
+     * @param Transport|null $transport
      * @return TransportProperty
      */
-    public function addTransport(Transport $transport): self
+    public function setTransport(?Transport $transport): self
     {
-        if (!$this->transports->contains($transport)) {
-            $this->transports[] = $transport;
-            $transport->setTransportProperty($this);
-        }
+        $this->transport = $transport;
 
-        return $this;
-    }
-
-    /**
-     * @param Transport $transport
-     * @return TransportProperty
-     */
-    public function removeTransport(Transport $transport): self
-    {
-        if ($this->transports->contains($transport)) {
-            $this->transports->removeElement($transport);
-            // set the owning side to null (unless already changed)
-            if ($transport->getTransportProperty() === $this) {
-                $transport->setTransportProperty(null);
-            }
+        // set (or unset) the owning side of the relation if necessary
+        $newTransportProperty = $transport === null ? null : $this;
+        if ($newTransportProperty !== $transport->getTransportProperty()) {
+            $transport->setTransportProperty($newTransportProperty);
         }
 
         return $this;

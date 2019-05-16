@@ -15,13 +15,14 @@
 - c require profiler --dev
 - c require make --dev
 - c require orm-fixtures --dev
+- c require fzaninotto/faker --dev
  
 ## Specific
 
 - c require orm
 - c require mail
+- c require form
+- c require validator
 
 - c require zircote/swagger-php
-- c require fzaninotto/faker
-
 - c require cron/cron-bundle

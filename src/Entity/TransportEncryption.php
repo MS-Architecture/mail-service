@@ -16,6 +16,7 @@ class TransportEncryption extends AbstractEntity
     const ENCRYPTION_TLS = 'tls';
 
     const PROPERTY_NAME = 'name';
+    const PROPERTY_DESCRIPTION = 'description';
 
     /**
      * @ORM\Column(type="string", length=255)

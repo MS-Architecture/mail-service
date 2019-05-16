@@ -11,6 +11,8 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Transport extends AbstractEntity
 {
+    const PROPERTY_NAME = 'name';
+
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\TransportProtocol", inversedBy="transports")
      */
@@ -22,14 +24,19 @@ class Transport extends AbstractEntity
     private $transportEncryption;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\TransportProperty", inversedBy="transports")
+     * @ORM\ManyToMany(targetEntity="App\Entity\TransportGroup", mappedBy="transports")
+     */
+    private $transportGroups;
+
+    /**
+     * @ORM\OneToOne(targetEntity="App\Entity\TransportProperty", inversedBy="transport", cascade={"persist", "remove"})
      */
     private $transportProperty;
 
     /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\TransportGroup", mappedBy="transports")
+     * @ORM\Column(type="string", length=255)
      */
-    private $transportGroups;
+    private $name;
 
     public function __construct()
     {
@@ -75,25 +82,6 @@ class Transport extends AbstractEntity
     }
 
     /**
-     * @return TransportProperty|null
-     */
-    public function getTransportProperty(): ?TransportProperty
-    {
-        return $this->transportProperty;
-    }
-
-    /**
-     * @param TransportProperty|null $transportProperty
-     * @return Transport
-     */
-    public function setTransportProperty(?TransportProperty $transportProperty): self
-    {
-        $this->transportProperty = $transportProperty;
-
-        return $this;
-    }
-
-    /**
      * @return Collection|TransportGroup[]
      */
     public function getTransportGroups(): Collection
@@ -125,6 +113,44 @@ class Transport extends AbstractEntity
             $this->transportGroups->removeElement($transportGroup);
             $transportGroup->removeTransport($this);
         }
+
+        return $this;
+    }
+
+    /**
+     * @return TransportProperty|null
+     */
+    public function getTransportProperty(): ?TransportProperty
+    {
+        return $this->transportProperty;
+    }
+
+    /**
+     * @param TransportProperty|null $transportProperty
+     * @return Transport
+     */
+    public function setTransportProperty(?TransportProperty $transportProperty): self
+    {
+        $this->transportProperty = $transportProperty;
+
+        return $this;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getName(): ?string
+    {
+        return $this->name;
+    }
+
+    /**
+     * @param string $name
+     * @return Transport
+     */
+    public function setName(string $name): self
+    {
+        $this->name = $name;
 
         return $this;
     }
