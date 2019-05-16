@@ -34,6 +34,7 @@ class AppFixtures extends Fixture implements DependentFixtureInterface
         $protocol = $this->getReference( TransportProtocol::PROTOCOL_NULL );
         $transport = new Transport();
         $transport->setName('Server (localhost)');
+        $transport->setDescription('Test');
         $transport->setTransportEncryption($encryption);
         $transport->setTransportProtocol($protocol);
         $transport->setTransportProperty($property);
@@ -43,6 +44,7 @@ class AppFixtures extends Fixture implements DependentFixtureInterface
         $envelope = $this->getReference( TransportEnvelope::ENVELOPE_SIMPLE );
         $group = new TransportGroup();
         $group->setName('Group (localhost)');
+        $group->setDescription('Test');
         $group->setTransportEnvelope( $envelope );
         $group->addTransport($transport);
         $group->addTransport($transport);

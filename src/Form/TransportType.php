@@ -7,6 +7,7 @@ use App\Entity\TransportProtocol;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -27,6 +28,9 @@ class TransportType extends AbstractType
             ->add('transportName', TextType::class, [
                 'required' => true,
                 'label' => 'Name'
+            ])
+            ->add('transportDescription', TextareaType::class, [
+                'label' => 'Description'
             ])
             ->add('transportProtocol', EntityType::class, [
                 'class' => TransportProtocol::class,

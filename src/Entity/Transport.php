@@ -38,6 +38,11 @@ class Transport extends AbstractEntity
      */
     private $name;
 
+    /**
+     * @ORM\Column(type="text", nullable=true)
+     */
+    private $description;
+
     public function __construct()
     {
         $this->transportGroups = new ArrayCollection();
@@ -151,6 +156,25 @@ class Transport extends AbstractEntity
     public function setName(string $name): self
     {
         $this->name = $name;
+
+        return $this;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getDescription(): ?string
+    {
+        return $this->description;
+    }
+
+    /**
+     * @param string|null $description
+     * @return Transport
+     */
+    public function setDescription(?string $description): self
+    {
+        $this->description = $description;
 
         return $this;
     }

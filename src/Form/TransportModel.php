@@ -9,6 +9,7 @@ namespace App\Form;
 class TransportModel
 {
     public $transportName;
+    public $transportDescription;
 
     public $transportProtocol;
     public $transportEncryption;

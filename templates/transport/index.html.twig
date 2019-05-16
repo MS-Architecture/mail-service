@@ -27,6 +27,7 @@
             {% form_theme formTransport _self %}
             {{ form_start(formTransport, {method:'post', attr: {class: 'px-3 pt-1 pb-3 bg-light'}}) }}
             {{ form_row(formTransport.transportName) }}
+            {{ form_row(formTransport.transportDescription) }}
             <hr/>
             {{ form_row(formTransport.transportProtocol, {attr: {class: 'custom-select'}}) }}
             {{ form_row(formTransport.transportPropertyHost) }}
@@ -46,6 +47,7 @@
                 <ul class="list-group mb-1">
                     <li class="list-group-item">
                         {{ transportProperty.transport.name }}
+                        <span class="small text-muted">{{ transportProperty.transport.description }}</span>
                     </li>
                     <li class="list-group-item small py-1">
                         {{ transportProperty.transport.transportProtocol.description }},
@@ -64,13 +66,31 @@
             {% endfor %}
         </div>
         <div class="col">
-            <h2>Transport</h2>
+            <h3>Transport</h3>
             {% form_theme formGroup _self %}
             {{ form_start(formGroup, {method:'post', attr: {class: 'px-3 pt-1 pb-3 bg-light'}}) }}
             {{ form_row(formGroup.name) }}
             {{ form_row(formGroup.description) }}
+            <hr/>
             {{ form_row(formGroup.transportEnvelope, {attr: {class: 'custom-select'}}) }}
+            <div class="text-right">
+                <button type="submit" class="btn btn-primary">Create</button>
+            </div>
             {{ form_end(formGroup) }}
+
+            <hr/>
+            {# @var transportGroup \App\Entity\TransportGroup #}
+            {% for transportGroup in transportGroups %}
+                <ul class="list-group mb-1">
+                    <li class="list-group-item">
+                        {{ transportGroup.name }}
+                        <span class="small text-muted">{{ transportGroup.description }}</span>
+                    </li>
+                    <li class="list-group-item small py-1">
+                        {{ transportGroup.transportEnvelope.description }}
+                    </li>
+                </ul>
+            {% endfor %}
         </div>
     </div>
 

@@ -53,6 +53,7 @@ class TransportController extends AbstractController
 
             $transport = new Transport();
             $transport->setName($transportModel->transportName);
+            $transport->setDescription($transportModel->transportDescription);
             $transport->setTransportProtocol( $transportModel->transportProtocol );
             $transport->setTransportEncryption( $transportModel->transportEncryption );
             $transport->setTransportProperty($transportProperty);
